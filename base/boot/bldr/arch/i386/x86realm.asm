@@ -62,7 +62,7 @@ ResetProcessor:
 		mov		es, ax
 		mov		fs, ax
 		mov		gs, ax
-		mov		esp, 400000h
+		mov		esp, 0x7ffff
 		mov		ebp, esp
 
 main32:
@@ -103,7 +103,7 @@ EnableA20Done:
 
 RunOS:
 		mov		ebx, 17e00h
-		mov		eax, 280h
+		mov		eax, 200h
 		add		ebx, eax
 		jmp		ebx
 		

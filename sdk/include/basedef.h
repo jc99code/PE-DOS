@@ -21,4 +21,6 @@ typedef char BYTE;
 typedef short WORD;
 typedef long DWORD;
 
+typedef void *HANDLE;
+
 #endif

@@ -1,8 +1,9 @@
 
 
 ;
+; BOOTCODE.ASM
+;
 ; This file is licensed under the BSD 2-Clause License. 
-; See LICENSE for details.
 ;
 
 
@@ -101,7 +102,7 @@ FindFileNextEntry:
 ReadFile:
 		mov		ax, 33
 		xor		dx, dx
-		mov		cx, 32
+		mov		cx, 64
 		push	WORD BOOTLDR_LOADSEG
 		pop		es
 		mov		bx, bp

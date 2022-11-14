@@ -19,4 +19,12 @@ typedef long INT_PTR;
 typedef unsigned long UINT_PTR;
 #endif
 
+#if defined(_M_AMD64)
+typedef long long LONG_PTR;
+typedef unsigned long long ULONG_PTR;
+#else
+typedef long LONG_PTR;
+typedef unsigned long ULONG_PTR;
+#endif
+
 #endif

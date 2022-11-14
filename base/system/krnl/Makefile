@@ -6,9 +6,8 @@ compiler-defines = \
 
 compiler-header-include-paths = \
 	/I $(BASEPATH)\sdk\include \
-	/I $(BASEPATH)\public\sdk\include \
-	/I include
-    
+	/I $(BASEPATH)\public\sdk\include 
+
 compiler-undefines =
 
 compiler-llvm-clang-switches = \
@@ -29,7 +28,7 @@ compiler-switches = \
 	/GF \
 	/GS- \
 	/openmp- \
-	/Od \
+	/O0 \
 	/Obi \
 	/Oi- \
 	/X \
@@ -41,7 +40,6 @@ linker-symbol-include-paths =
 
 linker-switches = \
 	$(linker-symbol-include-paths) \
-	/BASE:0x17e00 \
 	/FILEALIGN:0x80 \
 	/ALIGN:0x80 \
 	/ENTRY:main \
@@ -53,45 +51,30 @@ linker-switches = \
 	/SUBSYSTEM:NATIVE \
 	/MACHINE:X86 \
 	/SAFESEH:NO \
-	/NXCOMPAT:NO
-   
+	/NXCOMPAT:NO \
+	/ALLOWBIND \
+	/ALLOWISOLATION	\
+	/LARGEADDRESSAWARE \
+	/HIGHENTROPYVA:NO \
+	/TSAWARE:NO
+
 bootldr-compiler-switches := $(compiler-switches)
 bootldr-linker-switches := $(linker-switches)
 
 SOURCES = \
-	main.obj \
-	arch\i386\a20.obj \
-	arch\i386\int.obj \
-    arch\i386\idtasm.obj \
-	arch\i386\paging.obj \
-	devices\disk.obj \
-	devices\keyboard.obj \
-	devices\pit.obj \
-    fs\fastfat.obj \
-	video\vga.obj
+	krnl386.obj 
 
-BIN = BOOTLDR
+BIN = krnl386.exe
 
-all: arch\i386\x86realm.bin $(BIN)
+all: $(BIN) $(SOURCES)
 	
-clean:
-
-.PHONY: all clean
+.PHONY: all
 
 $(BIN): $(SOURCES)
 	$(linker) $(bootldr-linker-switches) /OUT:$@ $^
 
 %.obj: %.c
-	$(compiler) $(bootldr-compiler-switches) /Fo$@ $<
+	$(compiler) $(bootldr-compiler-switches) $<
 
 %.obj: %.asm
-	$(asm) -f win -o $@ $<
-
-include arch\Makefile
-include devices\Makefile
-include fs\Makefile
-include video\Makefile
-	
-arch\i386\x86realm.bin: arch\i386\x86realm.asm
-	$(asm) -f bin -o $@ $<
-
+	$(asm) -f win32 -o $@ $<
